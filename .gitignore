@@ -1,0 +1,6 @@
+*.exe
+*.o
+*.BAK
+old/Kono_Otsuki
+*.exe.stackdump
+

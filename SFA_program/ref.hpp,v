@@ -1,0 +1,29 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.1
+date	2007.05.20.04.10.11;	author mypc;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@#ifndef REF_HPP
+#define REF_HPP
+
+void total_cr_an_op();
+
+#endif // REF_HPP
+@

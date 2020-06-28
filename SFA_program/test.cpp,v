@@ -1,0 +1,54 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.1
+date	2007.05.20.04.10.52;	author mypc;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@#include <iostream>
+#include <math.h>
+using namespace std;
+
+void bool_test()
+{
+  bool t = true;
+  bool f = false;
+  cout << "true : " << t << "\n";
+  cout << "false : " << f << "\n";
+  cout << "true + true : " << t + t << "\n";
+  cout << "true * true : " << t * t << "\n";
+  cout << "true + false : " << t + f << "\n";
+  cout << "true * fales : " << t * f << "\n";
+  bool tt = t + t;
+  cout << "tt = t + t : " << tt << "\n";
+  int i = 2;
+  cout << "-- i=2 --\n";
+  cout << "i + t : " << i + t << "\n";
+  cout << "i * t : " << i * t << "\n";
+  cout << "i + f : " << i + f << "\n";
+  cout << "i * f : " << i * f << "\n";
+
+}
+
+int main()
+{
+  bool_test();
+
+  return 0;
+}
+@

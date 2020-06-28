@@ -1,0 +1,232 @@
+head	1.5;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.5
+date	2007.05.26.05.38.50;	author mypc;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2007.05.20.05.15.45;	author mypc;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2007.05.20.04.47.32;	author mypc;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2007.05.20.04.12.48;	author mypc;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2007.05.20.04.09.44;	author mypc;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.5
+log
+@*** empty log message ***
+@
+text
+@// SFA, 2*2, T=0, ref.cpp
+#include "ref.hpp"
+#include <iostream>
+#include <cmath>
+#define DEBUG
+
+const unsigned short n_sites = 4;
+const unsigned short n_spin = 2;
+
+void total_cr_an_op()
+{
+  unsigned short i_spin, j_spin, i_site, j_site, i_state, j_state;
+  const unsigned short n_states = pow(4, n_sites); std::cout << n_states << "\n";
+  bool cr_op[n_spin][n_sites][n_states][n_states];
+  bool an_op[n_spin][n_sites][n_states][n_states];
+  unsigned short num_particles[n_states];
+  //unsigned short num_up[n_states];
+  //unsigned short num_down[n_states];
+  bool existence[n_spin][n_sites][n_states];
+  for (i_state = 0; i_state < n_states; ++i_state) {
+    num_particles[i_state] = 0; // = num_up[i_state] = num_down[i_state] = 0;
+    for (i_spin = 0; i_spin < n_spin; ++i_spin) {
+      for (i_site = 0; i_site < n_sites; ++i_site) {
+	existence[i_spin][i_site][i_state] = false;
+	for (j_state = 0; j_state < n_states; ++j_state)
+	  cr_op[i_spin][i_site][i_state][j_state] = an_op[i_spin][i_site][i_state][j_state] = 0;
+      }
+    }
+  }
+  {
+    unsigned short shou, amari;
+    for (i_state = 1; i_state < n_states; ++i_state) {
+      shou = i_state;
+      for (i_site = 0; i_site < n_sites; ++i_site) {
+	for (i_spin = 0; i_spin < n_spin; ++i_spin) {
+	  amari = shou % 2;
+	  if (1 == amari)
+	    existence[i_spin][i_site][i_state] = true;
+	  shou /= 2;
+	}
+      }
+    }
+  }/*
+  {
+    unsigned short pre;
+    unsigned short index_spin_site_state;
+    for (i_state = 0; i_state < n_states; ++i_state) {
+      for (j_state = 0; j_state < n_states; ++j_state) {
+	if (1 == (num_particles[i_state] - num_particles[j_state])) {
+	  for (i_site = 0; i_site < n_sites; ++i_site) {
+	    for (i_spin = 0; i_spin < n_spin; ++i_spin) {
+	      if ((existence[i_spin][i_site][i_state] == false) &&
+		  (existence[i_spin][i_site][j_state] == true)) {
+	      }
+	    }
+	  }
+	}
+      }
+    }
+    }*/
+#ifndef DEBUG
+  for (i_state = 0; i_state < n_states; ++i_state) {
+    for (i_site = 0; i_site < n_sites; ++i_site)
+      for (i_spin = 0; i_spin < n_spin; ++i_spin)
+	num_particles[i_state] += existence[i_spin][i_site][i_state];
+    std::cout << num_particles[i_state] << " ";
+  }
+  std::cout << "\n";
+  for (i_spin = 0; i_spin < n_spin; ++i_spin)
+    for (i_site = 0; i_site < n_sites; ++i_site)
+      std::cout << existence[i_spin][i_site][n_states - 1] << "\n";
+#endif // DEBUG
+}
+
+
+int main()
+{
+  total_cr_an_op();
+
+  return 0;
+}
+@
+
+
+1.4
+log
+@Segmentation fault (core dumped)
+[A[Bwhen short is used rather than bool.
+@
+text
+@d5 1
+a5 1
+//#define DEBUG
+@
+
+
+1.3
+log
+@Segmentation fault (core dumped)
+@
+text
+@d5 1
+a5 1
+#define DEBUG
+d13 3
+a15 3
+  const unsigned short n_states = 4 * 4 * 4 * 4;
+  short cr_op[n_spin][n_sites][n_states][n_states];
+  short an_op[n_spin][n_sites][n_states][n_states];
+d17 2
+a18 2
+  unsigned short num_up[n_states];
+  unsigned short num_down[n_states];
+d21 1
+a21 1
+    num_particles[i_state] = num_up[i_state] = num_down[i_state] = 0;
+d26 1
+a26 1
+	  cr_op[i_spin][i_site][i_state][j_state] = an_op[i_spin][i_site][i_state][j_state] = false;
+d63 3
+a65 5
+    for (i_site = 0; i_site < n_sites; ++i_site) {
+      num_up[i_state] += existence[0][i_site][i_state];
+      num_down[i_state] += existence[1][i_site][i_state];
+    }
+    num_particles[i_state] = num_up[i_state] + num_down[i_state];
+@
+
+
+1.2
+log
+@*** empty log message ***
+@
+text
+@d12 1
+d14 2
+a15 2
+  bool cr_op[n_spin][n_sites][n_states][n_states];
+  bool an_op[n_spin][n_sites][n_states][n_states];
+d20 7
+a26 8
+  unsigned short i, ii, j, jj, k, kk;
+  for (i = 0; i < n_states; ++i) {
+    num_particles[i] = num_up[i] = num_down[i] = 0;
+    for (j = 0; j < n_spin; ++j) {
+      for (k = 0; k < n_sites; ++k) {
+	existence[j][k][i] = false;
+	for (ii = 0; ii < n_states; ++ii)
+	  cr_op[j][k][i][ii] = an_op[j][k][i][ii] = false;
+d32 4
+a35 4
+    for (k = 1; k < n_states; ++k) {
+      shou = k;
+      for (j = 0; j < n_sites; ++j) {
+	for (i = 0; i < n_spin; ++i) {
+d38 1
+a38 1
+	    existence[i][j][k] = true;
+d43 18
+a60 3
+  }
+
+
+d62 4
+a65 4
+  for (i = 0; i < n_states; ++i) {
+    for (j = 0; j < n_sites; ++j) {
+      num_up[i] += existence[0][j][i];
+      num_down[i] += existence[1][j][i];
+d67 2
+a68 2
+    num_particles[i] = num_up[i] + num_down[i];
+    std::cout << num_particles[i] << " ";
+d71 3
+a73 3
+  for (i = 0; i < n_spin; ++i)
+    for (j = 0; j < n_sites; ++j)
+      std::cout << existence[i][j][n_states - 1] << "\n";
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d5 1
+a5 1
+// #define DEBUG 1
+@
